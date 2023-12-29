@@ -14,11 +14,6 @@ describe('Logout scenario', function () {
     //Wait for the menu to become visible
     LogoutPage.MenuVisibility();
 
-// // Before interacting with the menu, wait for it to become visible
-// LogoutPage.MenuVisibility2
-// // Click on the menu button
-// LogoutPage.MenuBtnClick
-
 // Now, perform the logout action
 LogoutPage.LogoutBnclick
 
