@@ -1,4 +1,4 @@
-name: Finale task
+name: Final task
 
 on:
   push:
@@ -23,4 +23,5 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests
-        run: npm test
+        run: npm run cy:run
+        working-directory: cypress/e2e/testcases
