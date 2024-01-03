@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "b82c01fc-79ff-4668-9a59-9187a74d12d9",
+		"name": "MQA API ASSESSMENT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7645304"
+	},
+	"item": [
+		{
+			"name": "Get request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response body as JSON\r",
+							"const responseBodyJson = pm.response.json();\r",
+							"\r",
+							"// Define the expected first name and last name\r",
+							"const expectedFirstName = \"taiwo\";\r",
+							"const expectedLastName = \"olajide\";\r",
+							"\r",
+							"// Check if the first name and last name in the response match the expected values\r",
+							"pm.test(\"First name should be correct\", function () {\r",
+							"    pm.expect(responseBodyJson.args.firstname).to.eql(expectedFirstName);});\r",
+							"\r",
+							"pm.test(\"Last name should be correct\", function () {\r",
+							"    pm.expect(responseBodyJson.args.lastname).to.eql(expectedLastName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_url}}/get/?firstname=taiwo&lastname=olajide",
+					"host": [
+						"{{Base_url}}"
+					],
+					"path": [
+						"get",
+						""
+					],
+					"query": [
+						{
+							"key": "firstname",
+							"value": "taiwo"
+						},
+						{
+							"key": "lastname",
+							"value": "olajide"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response body as JSON\r",
+							"const responseBodyJson = pm.response.json();\r",
+							"\r",
+							"// Define the expected first name and last name\r",
+							"const expectedFirstName = \"Taiwo\";\r",
+							"const expectedLastName = \"Olajide\";\r",
+							"\r",
+							"// Check if the first name and last name in the response match the expected values\r",
+							"pm.test(\"First name should be correct\", function () {\r",
+							"    pm.expect(responseBodyJson.data.firstname).to.eql(expectedFirstName);\r",
+							"    pm.expect(responseBodyJson.json.firstname).to.eql(expectedFirstName)\r",
+							"    });\r",
+							"\r",
+							"pm.test(\"Last name should be correct\", function () {\r",
+							"    pm.expect(responseBodyJson.data.lastname).to.eql(expectedLastName);\r",
+							"    pm.expect(responseBodyJson.json.lastname).to.eql(expectedLastName)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"Taiwo\",\r\n    \"lastname\" : \"Olajide\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_url}}/post",
+					"host": [
+						"{{Base_url}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Basic authentication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body has JSON with 'authenticated'  to equal true\", function () {\r",
+							"    pm.expect(pm.response.json().authenticated).to.be.true;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Get the Authorization header from the request\r",
+							"const authorizationHeader = pm.request.headers.get('Authorization');\r",
+							"\r",
+							"// Check if the Authorization header exists\r",
+							"if (authorizationHeader) {\r",
+							"    // Extract the base64-encoded credentials part (after 'Basic ')\r",
+							"    const base64Credentials = authorizationHeader.replace('Basic ', '');\r",
+							"\r",
+							"    // Decode the base64-encoded credentials\r",
+							"    const decodedCredentials = atob(base64Credentials);\r",
+							"\r",
+							"    // Split the decoded credentials into username and password\r",
+							"    const [username, password] = decodedCredentials.split(':');\r",
+							"\r",
+							"    // Set the extracted username and password as environment variables\r",
+							"    pm.environment.set('extractedUsername', username);\r",
+							"    pm.environment.set('extractedPassword', password);\r",
+							"\r",
+							"    // Log the extracted username and password\r",
+							"    console.log('Extracted Username:', username);\r",
+							"    console.log('Extracted Password:', password);\r",
+							"\r",
+							"    // You can use the extracted username and password for further assertions or actions\r",
+							"    // For example, you might want to check if the username and password meet certain criteria.\r",
+							"} else {\r",
+							"    console.error('Authorization header not found in the request');\r",
+							"    // Handle the case where Authorization header is not present, depending on your needs.\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cG9zdG1hbjpwYXNzd29yZA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_url}}/basic-auth",
+					"host": [
+						"{{Base_url}}"
+					],
+					"path": [
+						"basic-auth"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
